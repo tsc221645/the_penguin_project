@@ -3,7 +3,8 @@ import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import ImageCredit from '../components/ImageCredit.vue'
 import SourceList from '../components/SourceList.vue'
-import { getImage, getSpecies } from '../lib/content'
+import SpeciesGallery from '../components/SpeciesGallery.vue'
+import { getImage, getSource, getSpecies } from '../lib/content'
 
 const route = useRoute()
 const item = computed(() => getSpecies(String(route.params.slug)))
@@ -14,7 +15,7 @@ const item = computed(() => getSpecies(String(route.params.slug)))
     <section class="profile-hero" :class="{ 'directory-profile': item.contentStatus === 'directory' }">
       <div class="container profile-grid">
         <div v-if="getImage(item.heroImageId)" class="profile-image">
-          <img :src="getImage(item.heroImageId)?.localPath" :alt="getImage(item.heroImageId)?.alt">
+          <img :src="getImage(item.heroImageId)?.approvedImageUrl" :alt="getImage(item.heroImageId)?.alt">
           <ImageCredit :image-id="item.heroImageId" />
         </div>
         <div v-else class="profile-image directory-profile-image"><span class="directory-mark">◒</span></div>
@@ -32,6 +33,7 @@ const item = computed(() => getSpecies(String(route.params.slug)))
     </section>
     <section class="container profile-body">
       <div class="content-column">
+        <SpeciesGallery :image-ids="item.galleryImageIds" />
         <template v-if="item.contentStatus === 'published'">
           <p class="eyebrow">In the field</p><h2>A life shaped by<br><i>ice and ocean.</i></h2>
           <p class="body-copy">{{ item.description }}</p>
@@ -40,7 +42,7 @@ const item = computed(() => getSpecies(String(route.params.slug)))
             <div><h3>Diet</h3><ul><li v-for="food in item.dietItems" :key="food">{{ food }}</li></ul></div>
             <div><h3>Recognize them by</h3><ul><li v-for="trait in item.traits" :key="trait">{{ trait }}</li></ul></div>
           </div>
-          <div class="facts"><p class="eyebrow">Small wonders</p><ul><li v-for="fact in item.facts" :key="fact">{{ fact }}</li></ul></div>
+          <div class="facts"><p class="eyebrow">Small wonders</p><ul><li v-for="fact in item.facts" :key="fact.id"><span>{{ fact.text }}</span><small><a v-for="sourceId in fact.sourceIds" :key="sourceId" :href="getSource(sourceId)?.url" target="_blank" rel="noreferrer">Source ↗</a></small></li></ul></div>
         </template>
         <template v-else>
           <p class="eyebrow">Directory entry</p><h2>More to discover<br><i>soon.</i></h2>

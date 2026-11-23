@@ -1,2 +1,29 @@
 .env
 *.env
+spec.md
+
+# Dependencies and package-manager caches
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Production/build output
+dist/
+coverage/
+.vite/
+
+# TypeScript/Vite generated files
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+*.d.ts
+*.js
+
+# Local tooling and OS files
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json

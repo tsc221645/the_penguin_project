@@ -14,16 +14,20 @@ export function validateContent(content: ContentBundle): string[] {
   const allowedLicenses = new Set(['PROJECT-OWNED', 'CC0', 'CC-BY-4.0', 'CC-BY-SA-4.0'])
 
   for (const image of content.images) {
-    for (const field of ['id', 'speciesId', 'localPath', 'author', 'originalFileUrl', 'licenseId', 'licenseUrl', 'attributionText', 'alt']) if (!image[field as keyof ImageRecord]) errors.push(`Image ${image.id || '(unknown)'} is missing ${field}`)
+    for (const field of ['id', 'speciesId', 'approvedImageUrl', 'author', 'originalFileUrl', 'licenseId', 'licenseUrl', 'attributionText', 'alt']) if (!image[field as keyof ImageRecord]) errors.push(`Image ${image.id || '(unknown)'} is missing ${field}`)
     if (!speciesIds.has(image.speciesId)) errors.push(`Image ${image.id} references missing species ${image.speciesId}`)
     if (image.reviewStatus !== 'approved') errors.push(`Image ${image.id} is not approved`)
     if (!allowedLicenses.has(image.licenseId)) errors.push(`Image ${image.id} has unsupported license ${image.licenseId}`)
+    if (!image.categories.length) errors.push(`Image ${image.id} has no category`) 
+    if (!/^https:\/\//.test(image.approvedImageUrl) || !/^https:\/\//.test(image.originalFileUrl)) errors.push(`Image ${image.id} must use HTTPS URLs`)
   }
   for (const item of content.species) {
     if (item.contentStatus === 'directory') {
       for (const sourceId of item.sourceIds) if (!sourceIds.has(sourceId)) errors.push(`Directory species ${item.id} references missing source ${sourceId}`)
       continue
     }
+    for (const fact of item.facts) for (const sourceId of fact.sourceIds) if (!sourceIds.has(sourceId)) errors.push(`Fact ${fact.id} in ${item.id} references missing source ${sourceId}`)
+    for (const measurement of [item.heightCm, item.weightKg]) for (const sourceId of measurement.sourceIds) if (!sourceIds.has(sourceId)) errors.push(`Measurement in ${item.id} references missing source ${sourceId}`)
     if (!imageIds.has(item.heroImageId)) errors.push(`Species ${item.id} references missing hero image`)
     for (const imageId of item.galleryImageIds) if (!imageIds.has(imageId)) errors.push(`Species ${item.id} references missing gallery image ${imageId}`)
     for (const sourceId of item.sourceIds) if (!sourceIds.has(sourceId)) errors.push(`Species ${item.id} references missing source ${sourceId}`)

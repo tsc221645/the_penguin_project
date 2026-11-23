@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 const dist = join(process.cwd(), 'dist')
-const requiredFiles = ['index.html', 'images/adelie.svg', 'images/emperor.svg', 'images/gentoo.svg']
+const requiredFiles = ['index.html']
 const missing = requiredFiles.filter((file) => !existsSync(join(dist, file)))
 
 if (missing.length) {

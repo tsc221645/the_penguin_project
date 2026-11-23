@@ -8,7 +8,7 @@ const routerLinkStub = { template: '<a><slot /></a>' }
 describe('SpeciesCard', () => {
   it('renders approved artwork for a published profile', () => {
     const wrapper = mount(SpeciesCard, { props: { item: species[0] }, global: { stubs: { RouterLink: routerLinkStub } } })
-    expect(wrapper.find('img').attributes('src')).toBe('/images/adelie.svg')
+    expect(wrapper.find('img').attributes('src')).toContain('Researching_Ad%C3%A9lie_penguin_JARE_01')
     expect(wrapper.text()).toContain('Adélie penguin')
     expect(wrapper.text()).not.toContain('Profile coming soon')
   })

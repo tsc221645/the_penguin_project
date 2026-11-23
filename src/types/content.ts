@@ -1,4 +1,4 @@
-export type ConservationStatus = 'Least Concern' | 'Near Threatened' | 'Endangered'
+export type ConservationStatus = 'Least Concern' | 'Near Threatened' | 'Vulnerable' | 'Endangered' | 'Critically Endangered'
 
 export interface SourceRecord {
   id: string; organizationOrAuthor: string; title: string; url: string
@@ -18,5 +18,5 @@ export interface SpeciesRecord {
   habitatRegions: string[]; dietItems: string[]; traits: string[]; facts: string[]
   heightCm: { min: number; max: number }; weightKg: { min: number; max: number }
   conservation: { status: ConservationStatus; assessmentYear: number; sourceId: string; reviewDate: string }
-  sourceIds: string[]; lastReviewed: string; contentStatus: 'published' | 'draft'
+  sourceIds: string[]; lastReviewed: string; contentStatus: 'published' | 'directory' | 'draft'
 }

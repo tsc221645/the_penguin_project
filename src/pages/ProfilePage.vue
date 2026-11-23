@@ -4,6 +4,51 @@ import { useRoute, RouterLink } from 'vue-router'
 import ImageCredit from '../components/ImageCredit.vue'
 import SourceList from '../components/SourceList.vue'
 import { getImage, getSpecies } from '../lib/content'
-const route = useRoute(); const item = computed(() => getSpecies(String(route.params.slug)))
+
+const route = useRoute()
+const item = computed(() => getSpecies(String(route.params.slug)))
 </script>
-<template><div v-if="item" class="profile"><section class="profile-hero"><div class="container profile-grid"><div class="profile-image"><img :src="getImage(item.heroImageId)?.localPath" :alt="getImage(item.heroImageId)?.alt"><ImageCredit :image-id="item.heroImageId" /></div><div class="profile-intro"><RouterLink class="back-link" to="/species">← All species</RouterLink><p class="eyebrow">{{ item.scientificName }}</p><h1>{{ item.commonName }}</h1><p class="intro">{{ item.intro }}</p><div class="quick-facts"><div><strong>{{ item.heightCm.min }}–{{ item.heightCm.max }}</strong><span>height · cm</span></div><div><strong>{{ item.weightKg.min }}–{{ item.weightKg.max }}</strong><span>weight · kg</span></div><div><strong>{{ item.conservation.status }}</strong><span>status · {{ item.conservation.assessmentYear }}</span></div></div></div></div></section><section class="container profile-body"><div class="content-column"><p class="eyebrow">In the field</p><h2>A life shaped by<br><i>ice and ocean.</i></h2><p class="body-copy">{{ item.description }}</p><div class="detail-grid"><div><h3>Habitat</h3><ul><li v-for="region in item.habitatRegions" :key="region">{{ region }}</li></ul></div><div><h3>Diet</h3><ul><li v-for="food in item.dietItems" :key="food">{{ food }}</li></ul></div><div><h3>Recognize them by</h3><ul><li v-for="trait in item.traits" :key="trait">{{ trait }}</li></ul></div></div><div class="facts"><p class="eyebrow">Small wonders</p><ul><li v-for="fact in item.facts" :key="fact">{{ fact }}</li></ul></div></div><aside class="sources"><p class="eyebrow">Trace the details</p><h3>Sources & review</h3><p class="muted">This profile was last reviewed {{ item.lastReviewed }}. Conservation status reflects the dated assessment shown above.</p><SourceList :source-ids="item.sourceIds" /></aside></section></div><div v-else class="container empty-state"><h2>That penguin wandered off.</h2><RouterLink class="text-link" to="/species">Return to the collection →</RouterLink></div></template>
+
+<template>
+  <div v-if="item" class="profile">
+    <section class="profile-hero" :class="{ 'directory-profile': item.contentStatus === 'directory' }">
+      <div class="container profile-grid">
+        <div v-if="getImage(item.heroImageId)" class="profile-image">
+          <img :src="getImage(item.heroImageId)?.localPath" :alt="getImage(item.heroImageId)?.alt">
+          <ImageCredit :image-id="item.heroImageId" />
+        </div>
+        <div v-else class="profile-image directory-profile-image"><span class="directory-mark">◒</span></div>
+        <div class="profile-intro">
+          <RouterLink class="back-link" to="/species">← All species</RouterLink>
+          <p class="eyebrow">{{ item.scientificName }}</p>
+          <h1>{{ item.commonName }}</h1>
+          <p class="intro">{{ item.contentStatus === 'directory' ? 'This species is part of our directory. Its full editorial profile is being researched and reviewed.' : item.intro }}</p>
+          <div class="quick-facts">
+            <div><strong>{{ item.conservation.status }}</strong><span>status · {{ item.conservation.assessmentYear }}</span></div>
+            <div><strong>{{ item.habitatRegions[0] }}</strong><span>recorded range</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="container profile-body">
+      <div class="content-column">
+        <template v-if="item.contentStatus === 'published'">
+          <p class="eyebrow">In the field</p><h2>A life shaped by<br><i>ice and ocean.</i></h2>
+          <p class="body-copy">{{ item.description }}</p>
+          <div class="detail-grid">
+            <div><h3>Habitat</h3><ul><li v-for="region in item.habitatRegions" :key="region">{{ region }}</li></ul></div>
+            <div><h3>Diet</h3><ul><li v-for="food in item.dietItems" :key="food">{{ food }}</li></ul></div>
+            <div><h3>Recognize them by</h3><ul><li v-for="trait in item.traits" :key="trait">{{ trait }}</li></ul></div>
+          </div>
+          <div class="facts"><p class="eyebrow">Small wonders</p><ul><li v-for="fact in item.facts" :key="fact">{{ fact }}</li></ul></div>
+        </template>
+        <template v-else>
+          <p class="eyebrow">Directory entry</p><h2>More to discover<br><i>soon.</i></h2>
+          <p class="body-copy">We’re building this profile from reviewed scientific references and properly licensed imagery. For now, the directory records this species’ accepted name, broad range, and conservation category.</p>
+        </template>
+      </div>
+      <aside class="sources"><p class="eyebrow">Trace the details</p><h3>Sources & review</h3><p class="muted">This entry was last reviewed {{ item.lastReviewed }}. Conservation status reflects the dated assessment shown above.</p><SourceList :source-ids="item.sourceIds" /></aside>
+    </section>
+  </div>
+  <div v-else class="container empty-state"><h2>That penguin wandered off.</h2><RouterLink class="text-link" to="/species">Return to the collection →</RouterLink></div>
+</template>

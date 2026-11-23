@@ -17,8 +17,10 @@ npm run test:smoke        # checks the already-built dist/ output
 
 - Content validation rejects unapproved images, missing attribution, unsupported licenses, broken references, and incomplete conservation context.
 - Directory tests verify 18 unique species slugs, URL lookup, and the boundary between 3 published profiles and 15 directory entries.
-- Component tests verify published artwork and safe placeholders for entries without approved imagery.
-- Route tests verify the public routes are registered.
+- Exploration tests verify accent-insensitive search, filters, random selection, comparison values, and honest `Not available` output.
+- Component tests verify published external artwork and safe placeholders for entries without approved imagery.
+- Route tests verify the public routes, including `/compare`, are registered.
+- Gallery and fact data use the same central image/source IDs as the profile and credits pages.
 - The production smoke test verifies the build contains the app entry point and required local artwork.
 
 ## CI policy

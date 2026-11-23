@@ -20,6 +20,7 @@ vite.config.js
 vite.config.d.ts
 *.d.ts
 *.js
+!eslint.config.mjs
 
 # Local tooling and OS files
 .DS_Store

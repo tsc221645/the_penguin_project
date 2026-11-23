@@ -5,18 +5,26 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run validate:content && vue-tsc -b && vite build",
+    "typecheck": "vue-tsc -b --pretty false",
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
+    "check": "npm run validate:content && npm run typecheck && npm run lint && npm run test",
+    "build": "npm run check && vite build",
     "preview": "vite preview",
-    "validate:content": "tsx scripts/validate-content.ts",
-    "test": "vitest run"
+    "validate:content": "tsx scripts/validate-content.ts"
   },
   "dependencies": {
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@typescript-eslint/parser": "^8.19.1",
     "@vitejs/plugin-vue": "^5.2.1",
     "@types/node": "^22.10.5",
+    "eslint": "^9.17.0",
+    "eslint-plugin-vue": "^10.3.0",
+    "globals": "^15.14.0",
     "jsdom": "^26.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",

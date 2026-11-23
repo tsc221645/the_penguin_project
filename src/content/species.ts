@@ -5,3 +5,29 @@ export const species: SpeciesRecord[] = [
   { id: 'emperor', slug: 'emperor', commonName: 'Emperor penguin', scientificName: 'Aptenodytes forsteri', intro: 'The tallest penguin, built for long winters at the edge of the world.', description: 'Emperor penguins are the largest living penguins. Their deep body, dense feathers, and remarkable social behavior help them endure Antarctic winters, including the famous shared huddles that shelter adults from the wind.', heroImageId: 'emperor-hero', galleryImageIds: ['emperor-hero'], habitatRegions: ['Antarctic sea ice', 'East Antarctica', 'Ross Sea'], dietItems: ['Fish', 'Squid', 'Krill'], traits: ['Tallest penguin', 'Deep-diving hunter', 'Winter breeder'], facts: ['The male balances the single egg on his feet during incubation.', 'Adults can travel over sea ice between colony and ocean.', 'Their countershading helps camouflage them in water.'], heightCm: { min: 100, max: 122 }, weightKg: { min: 22, max: 45 }, conservation: { status: 'Near Threatened', assessmentYear: 2021, sourceId: 'birdlife-emperor', reviewDate: '2026-11-23' }, sourceIds: ['birdlife-emperor', 'penguin-world'], lastReviewed: '2026-11-23', contentStatus: 'published' },
   { id: 'gentoo', slug: 'gentoo', commonName: 'Gentoo penguin', scientificName: 'Pygoscelis papua', intro: 'A quick swimmer with a bright bill and a talent for adapting.', description: 'Gentoo penguins are recognizable by the white stripe above each eye and their warm orange-red bill. They are active coastal birds that often move quickly through the water and nest among grasses, stones, or bare ground.', heroImageId: 'gentoo-hero', galleryImageIds: ['gentoo-hero'], habitatRegions: ['Antarctic Peninsula', 'Subantarctic islands', 'Falkland Islands'], dietItems: ['Krill', 'Fish', 'Small crustaceans'], traits: ['White head stripe', 'Orange-red bill', 'Agile swimmer'], facts: ['They are among the fastest swimming penguins.', 'Gentoo colonies may use pebbles to build nests.', 'Their range reaches farther north than many Antarctic penguins.'], heightCm: { min: 51, max: 90 }, weightKg: { min: 4.5, max: 8.5 }, conservation: { status: 'Least Concern', assessmentYear: 2021, sourceId: 'birdlife-gentoo', reviewDate: '2026-11-23' }, sourceIds: ['birdlife-gentoo', 'penguin-world'], lastReviewed: '2026-11-23', contentStatus: 'published' },
 ]
+
+const directoryEntry = (id: string, slug: string, commonName: string, scientificName: string, range: string, status: SpeciesRecord['conservation']['status']): SpeciesRecord => ({
+  id, slug, commonName, scientificName,
+  intro: 'Directory entry — full profile coming soon.', description: '', heroImageId: '', galleryImageIds: [],
+  habitatRegions: [range], dietItems: [], traits: [], facts: [], heightCm: { min: 0, max: 0 }, weightKg: { min: 0, max: 0 },
+  conservation: { status, assessmentYear: 2023, sourceId: 'penguins-list', reviewDate: '2026-11-23' },
+  sourceIds: ['penguins-list', 'ioc-13-2'], lastReviewed: '2026-11-23', contentStatus: 'directory',
+})
+
+species.push(
+  directoryEntry('king', 'king', 'King penguin', 'Aptenodytes patagonicus', 'Subantarctic islands', 'Least Concern'),
+  directoryEntry('chinstrap', 'chinstrap', 'Chinstrap penguin', 'Pygoscelis antarcticus', 'Antarctic Peninsula and Balleny Islands', 'Least Concern'),
+  directoryEntry('little', 'little', 'Little penguin', 'Eudyptula minor', 'Australia and New Zealand', 'Least Concern'),
+  directoryEntry('galapagos', 'galapagos', 'Galápagos penguin', 'Spheniscus mendiculus', 'Galápagos Islands', 'Endangered'),
+  directoryEntry('humboldt', 'humboldt', 'Humboldt penguin', 'Spheniscus humboldti', 'Pacific coast of South America', 'Vulnerable'),
+  directoryEntry('magellanic', 'magellanic', 'Magellanic penguin', 'Spheniscus magellanicus', 'Coasts of southern South America', 'Least Concern'),
+  directoryEntry('african', 'african', 'African penguin', 'Spheniscus demersus', 'Coasts of Southern Africa', 'Critically Endangered'),
+  directoryEntry('yellow-eyed', 'yellow-eyed', 'Yellow-eyed penguin', 'Megadyptes antipodes', 'New Zealand', 'Endangered'),
+  directoryEntry('macaroni', 'macaroni', 'Macaroni penguin', 'Eudyptes chrysolophus', 'Antarctic Peninsula, South America, and subantarctic islands', 'Vulnerable'),
+  directoryEntry('royal', 'royal', 'Royal penguin', 'Eudyptes schlegeli', 'Macquarie Island and nearby islands', 'Least Concern'),
+  directoryEntry('northern-rockhopper', 'northern-rockhopper', 'Northern rockhopper penguin', 'Eudyptes moseleyi', 'Tristan da Cunha, Amsterdam Island, and Saint Paul Island', 'Endangered'),
+  directoryEntry('southern-rockhopper', 'southern-rockhopper', 'Southern rockhopper penguin', 'Eudyptes chrysocome', 'Southern South America and subantarctic islands', 'Vulnerable'),
+  directoryEntry('fiordland', 'fiordland', 'Fiordland penguin', 'Eudyptes pachyrhynchus', 'New Zealand', 'Near Threatened'),
+  directoryEntry('snares', 'snares', 'Snares penguin', 'Eudyptes robustus', 'Snares Islands', 'Vulnerable'),
+  directoryEntry('erect-crested', 'erect-crested', 'Erect-crested penguin', 'Eudyptes sclateri', 'Bounty and Antipodes Islands', 'Endangered'),
+)

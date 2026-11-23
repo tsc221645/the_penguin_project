@@ -20,6 +20,10 @@ export function validateContent(content: ContentBundle): string[] {
     if (!allowedLicenses.has(image.licenseId)) errors.push(`Image ${image.id} has unsupported license ${image.licenseId}`)
   }
   for (const item of content.species) {
+    if (item.contentStatus === 'directory') {
+      for (const sourceId of item.sourceIds) if (!sourceIds.has(sourceId)) errors.push(`Directory species ${item.id} references missing source ${sourceId}`)
+      continue
+    }
     if (!imageIds.has(item.heroImageId)) errors.push(`Species ${item.id} references missing hero image`)
     for (const imageId of item.galleryImageIds) if (!imageIds.has(imageId)) errors.push(`Species ${item.id} references missing gallery image ${imageId}`)
     for (const sourceId of item.sourceIds) if (!sourceIds.has(sourceId)) errors.push(`Species ${item.id} references missing source ${sourceId}`)

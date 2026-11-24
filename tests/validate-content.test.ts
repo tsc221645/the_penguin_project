@@ -2,9 +2,10 @@ import { describe, expect, it } from 'vitest'
 import { images } from '../src/content/images'
 import { sources } from '../src/content/sources'
 import { species } from '../src/content/species'
+import { occurrences } from '../src/content/geography'
 import { validateContent } from '../scripts/validate-content'
 
-const validBundle = () => ({ images: structuredClone(images), sources: structuredClone(sources), species: structuredClone(species) })
+const validBundle = () => ({ images: structuredClone(images), sources: structuredClone(sources), species: structuredClone(species), occurrences: structuredClone(occurrences) })
 
 describe('validateContent', () => {
   it('accepts the published content bundle', () => {

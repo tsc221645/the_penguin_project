@@ -7,7 +7,13 @@ export interface MeasurementRange { min: number; max: number; unit: 'cm' | 'kg';
 
 export interface SourceRecord {
   id: string; organizationOrAuthor: string; title: string; url: string
-  publishedAt?: string; accessedAt: string; sourceType: string
+  publishedAt?: string; accessedAt: string; sourceType: string; licenseNotes?: string
+}
+
+export interface OccurrenceRecord {
+  id: string; speciesId: string; gbifId: string; datasetKey: string; recordUrl: string
+  latitude: number; longitude: number; uncertaintyMeters?: number; observedAt?: string
+  licenseId: 'CC0' | 'CC-BY-4.0' | 'CC-BY-SA-4.0'; sourceId: string
 }
 
 export interface ImageRecord {

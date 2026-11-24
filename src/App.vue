@@ -8,7 +8,7 @@ const appVersion = import.meta.env.VITE_APP_VERSION ?? 'development'
   <header class="site-header">
     <div class="container nav-wrap">
       <RouterLink class="brand" to="/"><span class="brand-mark">◒</span><span>The Penguin<br><em>Project</em></span></RouterLink>
-      <nav aria-label="Main navigation"><RouterLink to="/species">Explore species</RouterLink><RouterLink to="/compare">Compare</RouterLink><RouterLink to="/about">About</RouterLink><RouterLink class="nav-button" to="/credits">Credits</RouterLink></nav>
+      <nav aria-label="Main navigation"><RouterLink to="/species">Explore species</RouterLink><RouterLink to="/compare">Compare</RouterLink><RouterLink to="/habitats">Habitats</RouterLink><RouterLink to="/about">About</RouterLink><RouterLink class="nav-button" to="/credits">Credits</RouterLink></nav>
     </div>
   </header>
   <main><RouterView /></main>

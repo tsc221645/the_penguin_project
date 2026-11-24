@@ -24,6 +24,7 @@ npm run test:e2e           # browser smoke tests against the production preview
 - Gallery and fact data use the same central image/source IDs as the profile and credits pages.
 - The production smoke test verifies the build contains the app entry point and required local artwork.
 - Playwright browser tests verify directory search, comparison source links, and the IUCN guide in a real browser.
+- Geography tests verify GBIF occurrence IDs, accepted licenses, coordinate bounds, uncertainty preservation, and the `/habitats` browser route.
 
 ## CI policy
 

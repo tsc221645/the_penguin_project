@@ -8,4 +8,4 @@ The habitat map distinguishes generalized habitat from individual observations.
 - Coordinate uncertainty must remain visible in the data and must not be silently rounded into false precision.
 - Sensitive or unpublished colony locations are not published.
 - The current Leaflet basemap uses `https://tile.openstreetmap.org/{z}/{x}/{y}.png` with visible `© OpenStreetMap contributors` attribution. The project must follow the [OSM tile usage policy](https://operations.osmfoundation.org/policies/tiles/), including caching behavior, referer handling, and no bulk/offline tile downloads.
-- A future Natural Earth layer must record its dataset version, license, transformation, and attribution before publication.
+- The map loads the Natural Earth 1:110m land layer as a separate public-domain overlay from the reviewed [Natural Earth vector source](https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_land.json). It is cartographic context, not species-distribution data.

@@ -16,6 +16,10 @@ export interface OccurrenceRecord {
   licenseId: 'CC0' | 'CC-BY-4.0' | 'CC-BY-SA-4.0'; sourceId: string
 }
 
+export interface HabitatAnchorRecord {
+  id: string; speciesId: string; latitude: number; longitude: number; sourceId: string
+}
+
 export interface ImageRecord {
   id: string; speciesId: string; categories: ImageCategory[]; externalProvider: 'Wikimedia Commons' | 'Project-owned'
   approvedImageUrl: string; thumbnailUrl?: string; title: string; author: string

@@ -1,11 +1,11 @@
 import { images } from '../src/content/images'
 import { sources } from '../src/content/sources'
 import { species } from '../src/content/species'
-import { occurrences } from '../src/content/geography'
+import { habitatAnchors, occurrences } from '../src/content/geography'
 
-import type { ImageRecord, OccurrenceRecord, SourceRecord, SpeciesRecord } from '../src/types/content'
+import type { HabitatAnchorRecord, ImageRecord, OccurrenceRecord, SourceRecord, SpeciesRecord } from '../src/types/content'
 
-export interface ContentBundle { images: ImageRecord[]; sources: SourceRecord[]; species: SpeciesRecord[]; occurrences: OccurrenceRecord[] }
+export interface ContentBundle { images: ImageRecord[]; sources: SourceRecord[]; species: SpeciesRecord[]; occurrences: OccurrenceRecord[]; habitatAnchors: HabitatAnchorRecord[] }
 
 export function validateContent(content: ContentBundle): string[] {
   const errors: string[] = []
@@ -43,9 +43,14 @@ export function validateContent(content: ContentBundle): string[] {
     if (occurrence.latitude < -90 || occurrence.latitude > 90 || occurrence.longitude < -180 || occurrence.longitude > 180) errors.push(`Occurrence ${occurrence.id} has invalid coordinates`)
     if (occurrence.uncertaintyMeters !== undefined && occurrence.uncertaintyMeters < 0) errors.push(`Occurrence ${occurrence.id} has invalid uncertainty`)
   }
+  for (const anchor of content.habitatAnchors) {
+    if (!speciesIds.has(anchor.speciesId)) errors.push(`Habitat anchor ${anchor.id} references missing species ${anchor.speciesId}`)
+    if (!sourceIds.has(anchor.sourceId)) errors.push(`Habitat anchor ${anchor.id} references missing source ${anchor.sourceId}`)
+    if (anchor.latitude < -90 || anchor.latitude > 90 || anchor.longitude < -180 || anchor.longitude > 180) errors.push(`Habitat anchor ${anchor.id} has invalid coordinates`)
+  }
   return errors
 }
 
-const errors = validateContent({ images, sources, species, occurrences })
+const errors = validateContent({ images, sources, species, occurrences, habitatAnchors })
 if (errors.length) { console.error(errors.join('\n')); process.exit(1) }
 console.log(`Content valid: ${species.length} species, ${images.length} approved images, ${sources.length} sources.`)

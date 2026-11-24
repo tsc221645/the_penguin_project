@@ -22,6 +22,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fetch the release tag object
+        run: |
+          git fetch origin \
+            "refs/tags/$GITHUB_REF_NAME:refs/tags/$GITHUB_REF_NAME"
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -36,6 +41,7 @@ jobs:
 
       - name: Require an annotated tag
         run: |
+          git cat-file -t "refs/tags/$GITHUB_REF_NAME"
           test "$(git cat-file -t "refs/tags/$GITHUB_REF_NAME")" = "tag" || {
             echo "Release tags must be annotated tags."
             exit 1

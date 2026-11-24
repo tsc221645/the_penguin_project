@@ -1,4 +1,26 @@
-import type { OccurrenceRecord } from '../types/content'
+import type { HabitatAnchorRecord, OccurrenceRecord } from '../types/content'
+
+// Generalized visual anchors for species habitat context. These are not sightings, colony coordinates, or full ranges.
+export const habitatAnchors: HabitatAnchorRecord[] = [
+  { id: 'habitat-adelie', speciesId: 'adelie', latitude: -67, longitude: 140, sourceId: 'penguins-list' },
+  { id: 'habitat-emperor', speciesId: 'emperor', latitude: -72, longitude: 100, sourceId: 'penguins-list' },
+  { id: 'habitat-gentoo', speciesId: 'gentoo', latitude: -64, longitude: -60, sourceId: 'penguins-list' },
+  { id: 'habitat-king', speciesId: 'king', latitude: -54, longitude: -37, sourceId: 'penguins-list' },
+  { id: 'habitat-chinstrap', speciesId: 'chinstrap', latitude: -62, longitude: -58, sourceId: 'penguins-list' },
+  { id: 'habitat-little', speciesId: 'little', latitude: -38, longitude: 145, sourceId: 'penguins-list' },
+  { id: 'habitat-galapagos', speciesId: 'galapagos', latitude: 0, longitude: -90, sourceId: 'penguins-list' },
+  { id: 'habitat-humboldt', speciesId: 'humboldt', latitude: -12, longitude: -77, sourceId: 'penguins-list' },
+  { id: 'habitat-magellanic', speciesId: 'magellanic', latitude: -45, longitude: -68, sourceId: 'penguins-list' },
+  { id: 'habitat-african', speciesId: 'african', latitude: -34, longitude: 18, sourceId: 'penguins-list' },
+  { id: 'habitat-yellow-eyed', speciesId: 'yellow-eyed', latitude: -45, longitude: 170, sourceId: 'penguins-list' },
+  { id: 'habitat-macaroni', speciesId: 'macaroni', latitude: -54, longitude: -36, sourceId: 'penguins-list' },
+  { id: 'habitat-royal', speciesId: 'royal', latitude: -54, longitude: 158, sourceId: 'penguins-list' },
+  { id: 'habitat-northern-rockhopper', speciesId: 'northern-rockhopper', latitude: -37, longitude: 77, sourceId: 'penguins-list' },
+  { id: 'habitat-southern-rockhopper', speciesId: 'southern-rockhopper', latitude: -52, longitude: -59, sourceId: 'penguins-list' },
+  { id: 'habitat-fiordland', speciesId: 'fiordland', latitude: -45, longitude: 168, sourceId: 'penguins-list' },
+  { id: 'habitat-snares', speciesId: 'snares', latitude: -48, longitude: 166, sourceId: 'penguins-list' },
+  { id: 'habitat-erect-crested', speciesId: 'erect-crested', latitude: -48, longitude: 179, sourceId: 'penguins-list' },
+]
 
 // These are individual GBIF records, not generalized species ranges.
 export const occurrences: OccurrenceRecord[] = [

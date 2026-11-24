@@ -8,6 +8,16 @@ test('searches the species directory', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Adélie penguin' })).toBeVisible()
 })
 
+test('cycles through all featured species on the home hero', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.getByText('01 / 18', { exact: true })).toBeVisible()
+  const image = page.locator('.hero-carousel-image')
+  const firstSource = await image.getAttribute('src')
+  await page.getByRole('button', { name: 'Next featured species' }).click()
+  await expect(page.getByText('02 / 18', { exact: true })).toBeVisible()
+  await expect(image).not.toHaveAttribute('src', firstSource ?? '')
+})
+
 test('cycles through the Adélie image carousel', async ({ page }) => {
   await page.goto('/species/adelie')
   const image = page.locator('.carousel-stage img')
@@ -36,6 +46,8 @@ test('shows habitat observations with an accessible region fallback', async ({ p
   await page.goto('/habitats')
   await expect(page.getByRole('heading', { name: 'Where penguins live' })).toBeVisible()
   await expect(page.locator('.habitat-map')).toBeVisible()
+  await expect(page.getByLabel('Species').locator('option')).toHaveCount(19)
+  await expect(page.getByRole('heading', { name: 'All 18 species' })).toBeVisible()
   await expect(page.getByText(/individual GBIF observations/)).toBeVisible()
   await expect(page.getByRole('link', { name: /GBIF occurrence source/ })).toHaveAttribute('href', /gbif.org/)
 })

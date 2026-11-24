@@ -2,10 +2,12 @@
 
 All notable changes to The Penguin Project will be documented here.
 
-## [Unreleased]
+## [0.1.0] — 2026-11-24
 
-- Release automation and tag-based deployment are being prepared.
-- The current project version is `0.1.0` but has not been published as a release tag.
+- Added the 18-species directory with verified Wikimedia Commons imagery and attribution records.
+- Added species search, comparison, IUCN category guidance, and an accessible image carousel.
+- Added the reviewed GBIF habitat map and tag-based GitHub Pages release pipeline.
+- Updated the home collection to present all 18 species.
 
 ## Release notes format
 

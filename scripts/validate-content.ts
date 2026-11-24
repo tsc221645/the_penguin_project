@@ -54,6 +54,8 @@ export function validateContent(content: ContentBundle): string[] {
     if (!question.prompt || !question.explanation) errors.push(`Quiz question ${question.id} is missing prompt or explanation`)
     for (const sourceId of question.sourceIds) if (!sourceIds.has(sourceId)) errors.push(`Quiz question ${question.id} references missing source ${sourceId}`)
     if (question.speciesId && !speciesIds.has(question.speciesId)) errors.push(`Quiz question ${question.id} references missing species ${question.speciesId}`)
+    if (question.imageId && !imageIds.has(question.imageId)) errors.push(`Quiz question ${question.id} references missing image ${question.imageId}`)
+    if (question.imageId && question.speciesId && content.images.find((image) => image.id === question.imageId)?.speciesId !== question.speciesId) errors.push(`Quiz question ${question.id} image does not match species ${question.speciesId}`)
   }
   return errors
 }

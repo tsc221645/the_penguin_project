@@ -58,4 +58,12 @@ test('answers a sourced quiz question', async ({ page }) => {
   await page.getByRole('button', { name: 'Small stones' }).click()
   await expect(page.getByRole('status')).toContainText('Correct!')
   await expect(page.getByRole('status')).toContainText('Penguin species and adaptations')
+  await expect(page.locator('.answer-check')).toBeVisible()
+})
+
+test('shows a species-specific habitat map on a profile', async ({ page }) => {
+  await page.goto('/species/king')
+  await expect(page.getByRole('heading', { name: 'Where to find King penguin' })).toBeVisible()
+  await expect(page.locator('.profile-habitat .habitat-map')).toBeVisible()
+  await expect(page.locator('.profile-region-list')).toContainText('Subantarctic islands')
 })

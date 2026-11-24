@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import ImageCredit from '../components/ImageCredit.vue'
+import HabitatMap from '../components/HabitatMap.vue'
 import SourceList from '../components/SourceList.vue'
 import SpeciesGallery from '../components/SpeciesGallery.vue'
 import { getImage, getSource, getSpecies } from '../lib/content'
@@ -34,6 +35,13 @@ const item = computed(() => getSpecies(String(route.params.slug)))
     <section class="container profile-body">
       <div class="content-column">
         <SpeciesGallery :image-ids="item.galleryImageIds" />
+        <section class="profile-habitat" aria-labelledby="profile-habitat-heading">
+          <p class="eyebrow">In the wild</p>
+          <h2 id="profile-habitat-heading">Where to find<br><i>{{ item.commonName }}</i></h2>
+          <p class="body-copy">The map shows a generalized habitat anchor for this species and any reviewed GBIF observations available in the project. It is context, not a complete distribution map.</p>
+          <HabitatMap :species-id="item.id" />
+          <ul class="profile-region-list"><li v-for="region in item.habitatRegions" :key="region">{{ region }}</li></ul>
+        </section>
         <p class="eyebrow">{{ item.contentStatus === 'directory' ? 'Directory profile' : 'In the field' }}</p>
         <h2>A life shaped by<br><i>ice and ocean.</i></h2>
         <p class="body-copy">{{ item.description }}</p>

@@ -21,6 +21,21 @@ export const quizQuestions: QuizQuestion[] = [
     options: [{ id: 'camouflage', label: 'Camouflage in water' }, { id: 'nest-building', label: 'Building stone nests' }, { id: 'flying', label: 'Flying above the sea' }, { id: 'climbing', label: 'Climbing trees' }],
     correctOptionId: 'camouflage', explanation: 'The darker back and lighter underside of countershading can help camouflage a penguin in water.', sourceIds: ['penguin-world'],
   },
+  {
+    id: 'king-image-identification', speciesId: 'king', imageId: 'king-hero', prompt: 'Which penguin is shown in this approved reference image?',
+    options: [{ id: 'king', label: 'King penguin' }, { id: 'chinstrap', label: 'Chinstrap penguin' }, { id: 'little', label: 'Little penguin' }, { id: 'african', label: 'African penguin' }],
+    correctOptionId: 'king', explanation: 'This image is registered to the King penguin record in the project image registry.', sourceIds: ['penguins-list'],
+  },
+  {
+    id: 'yellow-eyed-name', speciesId: 'yellow-eyed', prompt: 'What Māori name is associated with the Yellow-eyed penguin?',
+    options: [{ id: 'hoiho', label: 'Hoiho' }, { id: 'tawaki', label: 'Tawaki' }, { id: 'korora', label: 'Kororā' }, { id: 'pokotiwha', label: 'Pokotiwha' }],
+    correctOptionId: 'hoiho', explanation: 'The New Zealand Department of Conservation identifies hoiho as the Māori name for the Yellow-eyed penguin.', sourceIds: ['nz-doc-yellow-eyed'],
+  },
+  {
+    id: 'snares-bill-mark', speciesId: 'snares', prompt: 'Which feature helps distinguish a Snares penguin from a Fiordland penguin?',
+    options: [{ id: 'bare-bill', label: 'A prominent bare area at the bill base' }, { id: 'blue-feathers', label: 'A bright blue back' }, { id: 'long-tail', label: 'A long feathered tail' }, { id: 'red-chest', label: 'A red chest band' }],
+    correctOptionId: 'bare-bill', explanation: 'The New Zealand Department of Conservation notes the prominent bare skin at the bill base as a distinguishing feature.', sourceIds: ['nz-doc-snares'],
+  },
 ]
 
 export const didYouKnowFacts: FactRecord[] = [

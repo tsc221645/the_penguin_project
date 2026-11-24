@@ -4,7 +4,7 @@ export type ImageCategory = 'hero' | 'portrait' | 'colony' | 'social' | 'swimmin
 export interface FactRecord { id: string; text: string; sourceIds: string[] }
 
 export interface QuizOption { id: string; label: string }
-export interface QuizQuestion { id: string; prompt: string; options: QuizOption[]; correctOptionId: string; explanation: string; sourceIds: string[]; speciesId?: string }
+export interface QuizQuestion { id: string; prompt: string; options: QuizOption[]; correctOptionId: string; explanation: string; sourceIds: string[]; speciesId?: string; imageId?: string }
 
 export interface MeasurementRange { min: number; max: number; unit: 'cm' | 'kg'; sourceIds: string[]; qualifier?: string }
 

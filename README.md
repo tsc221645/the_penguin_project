@@ -34,6 +34,8 @@ npm run build              # Checks plus production build
 
 The production preview is available with `npm run preview` after building.
 
+The main interactive routes are `/species`, `/compare`, `/habitats`, `/about`, and `/credits`.
+
 ## DevOps and CI/CD
 
 Current application version: `0.1.0` (not yet published as a release).

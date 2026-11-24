@@ -2,6 +2,10 @@
 
 All notable changes to The Penguin Project will be documented here.
 
+## [0.4.2] — Unreleased
+
+- Corrected the package version used by the release tag validator after the failed `v0.4.1` attempt.
+
 ## [0.4.0] — Unreleased
 
 - Added the Phase 4 educational quiz with sourced explanations, animated answer feedback, and an approved-image identification question.

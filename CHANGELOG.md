@@ -2,9 +2,9 @@
 
 All notable changes to The Penguin Project will be documented here.
 
-## [0.4.3] — Unreleased
+## [0.4.4] — Unreleased
 
-- Corrected the package version used by the release tag validator after the failed `v0.4.1` and `v0.4.2` attempts.
+- Corrected the release metadata and tag format after the failed `v0.4.1`, `v0.4.2`, and `v0.4.3` attempts.
 
 ## [0.4.0] — Unreleased
 

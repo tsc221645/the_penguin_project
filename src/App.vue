@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+
+const appVersion = import.meta.env.VITE_APP_VERSION ?? 'development'
 </script>
 
 <template>
@@ -10,5 +12,5 @@ import { RouterLink, RouterView } from 'vue-router'
     </div>
   </header>
   <main><RouterView /></main>
-  <footer class="site-footer"><div class="container footer-inner"><span>Made with curiosity for the world’s most charming seabirds.</span><RouterLink to="/credits">Image credits</RouterLink></div></footer>
+  <footer class="site-footer"><div class="container footer-inner"><span>Made with curiosity for the world’s most charming seabirds.</span><span>Version {{ appVersion }}</span><RouterLink to="/credits">Image credits</RouterLink></div></footer>
 </template>

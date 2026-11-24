@@ -1,0 +1,117 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-pages
+  cancel-in-progress: false
+
+jobs:
+  validate-and-build:
+    name: Validate tagged commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out tagged commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate release tag and package version
+        run: npm run validate:release -- "$GITHUB_REF_NAME"
+
+      - name: Require an annotated tag
+        run: |
+          test "$(git cat-file -t "refs/tags/$GITHUB_REF_NAME")" = "tag" || {
+            echo "Release tags must be annotated tags."
+            exit 1
+          }
+
+      - name: Verify tagged commit belongs to main
+        shell: bash
+        run: |
+          git fetch origin main --no-tags
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main || {
+            echo "Tagged commit $GITHUB_SHA is not contained in origin/main"
+            exit 1
+          }
+
+      - name: Run quality gate
+        run: npm run check
+
+      - name: Build tagged release
+        run: npm run build
+        env:
+          VITE_BASE: /${{ github.event.repository.name }}/
+          VITE_APP_VERSION: ${{ github.ref_name }}
+
+      - name: Verify production output
+        run: npm run test:smoke
+
+      - name: Store release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: penguin-project-${{ github.ref_name }}
+          path: dist
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy tagged release
+    needs: validate-and-build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Download release artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: penguin-project-${{ github.ref_name }}
+          path: dist
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Prepare Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  create-release:
+    name: Create GitHub Release
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create release if it does not already exist
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; leaving it unchanged."
+          else
+            gh release create "$TAG" --verify-tag --generate-notes --title "Penguin Project $TAG"
+          fi

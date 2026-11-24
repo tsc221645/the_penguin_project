@@ -68,11 +68,25 @@ jobs:
       - name: Verify production output
         run: npm run test:smoke
 
+      - name: Preserve release artifact
+        run: mv dist dist-release
+
+      - name: Build E2E test bundle
+        run: npm run build
+        env:
+          VITE_BASE: /
+
       - name: Install browser for end-to-end tests
         run: npx playwright install --with-deps chromium
 
       - name: Run end-to-end tests
         run: npm run test:e2e
+
+      - name: Restore release artifact
+        if: always()
+        run: |
+          rm -rf dist
+          mv dist-release dist
 
       - name: Store release artifact
         uses: actions/upload-artifact@v4

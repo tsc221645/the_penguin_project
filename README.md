@@ -38,7 +38,7 @@ The main interactive routes are `/species`, `/compare`, `/habitats`, `/quiz`, `/
 
 ## DevOps and CI/CD
 
-Current application version: `0.4.2` (release candidate; publish after merging to `main`).
+Current application version: `0.4.3` (release candidate; publish after merging to `main`).
 
 [View GitHub Releases](https://github.com/tsc221645/the_penguin_project/releases)
 

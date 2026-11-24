@@ -34,7 +34,7 @@ npm run build              # Checks plus production build
 
 The production preview is available with `npm run preview` after building.
 
-The main interactive routes are `/species`, `/compare`, `/habitats`, `/about`, and `/credits`.
+The main interactive routes are `/species`, `/compare`, `/habitats`, `/quiz`, `/about`, and `/credits`.
 
 ## DevOps and CI/CD
 

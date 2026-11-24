@@ -18,6 +18,6 @@ describe('SpeciesCard', () => {
     const wrapper = mount(SpeciesCard, { props: { item: directoryItem }, global: { stubs: { RouterLink: routerLinkStub } } })
     expect(wrapper.find('img').exists()).toBe(true)
     expect(wrapper.find('img').attributes('src')).toContain('Aptenodytes_patagonicus')
-    expect(wrapper.text()).toContain('Profile coming soon')
+    expect(wrapper.text()).toContain('Directory profile')
   })
 })

@@ -11,6 +11,7 @@ npm run lint              # source and component rules
 npm run test              # Vitest unit/component tests
 npm run build             # all checks plus production bundle
 npm run test:smoke        # checks the already-built dist/ output
+npm run test:e2e           # browser smoke tests against the production preview
 ```
 
 ## What is covered
@@ -22,6 +23,7 @@ npm run test:smoke        # checks the already-built dist/ output
 - Route tests verify the public routes, including `/compare`, are registered.
 - Gallery and fact data use the same central image/source IDs as the profile and credits pages.
 - The production smoke test verifies the build contains the app entry point and required local artwork.
+- Playwright browser tests verify directory search, comparison source links, and the IUCN guide in a real browser.
 
 ## CI policy
 
@@ -29,4 +31,4 @@ Every pull request and push to the main branch runs validation, typecheck, lint,
 
 ## Future browser tests
 
-Add Playwright only when there is meaningful browser behavior to protect, such as search/filter state, comparison, keyboard navigation, or the deployed GitHub Pages fallback. Keep the current fast suite as the required gate and run browser tests as a separate job.
+The initial Playwright suite covers the core Phase 2 flows. Extend it when URL-driven comparison, keyboard navigation, responsive layouts, or the deployed GitHub Pages fallback become part of the product contract. Keep browser tests separate from the faster Vitest suite, but require both in CI and release validation.

@@ -13,6 +13,8 @@ pnpm-debug.log*
 dist/
 coverage/
 .vite/
+playwright-report/
+test-results/
 
 # TypeScript/Vite generated files
 *.tsbuildinfo
@@ -28,3 +30,4 @@ vite.config.d.ts
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+specs/

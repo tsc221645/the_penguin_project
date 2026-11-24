@@ -4,8 +4,9 @@ import { sources } from '../src/content/sources'
 import { species } from '../src/content/species'
 import { habitatAnchors, occurrences } from '../src/content/geography'
 import { validateContent } from '../scripts/validate-content'
+import { quizQuestions } from '../src/content/quiz'
 
-const validBundle = () => ({ images: structuredClone(images), sources: structuredClone(sources), species: structuredClone(species), occurrences: structuredClone(occurrences), habitatAnchors: structuredClone(habitatAnchors) })
+const validBundle = () => ({ images: structuredClone(images), sources: structuredClone(sources), species: structuredClone(species), occurrences: structuredClone(occurrences), habitatAnchors: structuredClone(habitatAnchors), quizQuestions: structuredClone(quizQuestions) })
 
 describe('validateContent', () => {
   it('accepts the published content bundle', () => {

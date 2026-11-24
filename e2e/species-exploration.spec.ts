@@ -51,3 +51,11 @@ test('shows habitat observations with an accessible region fallback', async ({ p
   await expect(page.getByText(/individual GBIF observations/)).toBeVisible()
   await expect(page.getByRole('link', { name: /GBIF occurrence source/ })).toHaveAttribute('href', /gbif.org/)
 })
+
+test('answers a sourced quiz question', async ({ page }) => {
+  await page.goto('/quiz')
+  await expect(page.getByRole('heading', { name: 'Test your penguin knowledge' })).toBeVisible()
+  await page.getByRole('button', { name: 'Small stones' }).click()
+  await expect(page.getByRole('status')).toContainText('Correct!')
+  await expect(page.getByRole('status')).toContainText('Penguin species and adaptations')
+})

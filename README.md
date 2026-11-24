@@ -88,6 +88,7 @@ The application is static-first. It has no backend deployment, database migratio
 npm run check        # full local quality gate
 npm run build        # quality gate plus production bundle
 npm run test:smoke   # verify the existing dist/ output
+npm run test:e2e     # browser tests against the production preview
 npm run preview      # preview the production bundle locally
 ```
 

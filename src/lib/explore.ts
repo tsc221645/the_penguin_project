@@ -18,18 +18,19 @@ export function filterSpecies(items: SpeciesRecord[], filters: SpeciesFilters): 
 export const getRegions = (items: SpeciesRecord[]) => [...new Set(items.flatMap((item) => item.habitatRegions))].sort()
 export const getRandomSpecies = (items: SpeciesRecord[], random = Math.random) => items[Math.floor(random() * items.length)]
 
-export interface ComparisonRow { label: string; left: string; right: string }
+export interface ComparisonRow { label: string; left: string; right: string; sourceIds: string[] }
 
 const range = (min: number, max: number, unit: string) => min === 0 && max === 0 ? 'Not available' : `${min}–${max} ${unit}`
 const list = (items: string[]) => items.length ? items.join(', ') : 'Not available'
 
 export function compareSpecies(left: SpeciesRecord, right: SpeciesRecord): ComparisonRow[] {
+  const sources = (...ids: string[]) => [...new Set(ids)]
   return [
-    { label: 'Height', left: range(left.heightCm.min, left.heightCm.max, left.heightCm.unit), right: range(right.heightCm.min, right.heightCm.max, right.heightCm.unit) },
-    { label: 'Weight', left: range(left.weightKg.min, left.weightKg.max, left.weightKg.unit), right: range(right.weightKg.min, right.weightKg.max, right.weightKg.unit) },
-    { label: 'Habitat', left: list(left.habitatRegions), right: list(right.habitatRegions) },
-    { label: 'Diet', left: list(left.dietItems), right: list(right.dietItems) },
-    { label: 'Breeding', left: list(left.breeding), right: list(right.breeding) },
-    { label: 'Conservation', left: `${left.conservation.status} (${left.conservation.assessmentYear})`, right: `${right.conservation.status} (${right.conservation.assessmentYear})` },
+    { label: 'Height', left: range(left.heightCm.min, left.heightCm.max, left.heightCm.unit), right: range(right.heightCm.min, right.heightCm.max, right.heightCm.unit), sourceIds: sources(...left.heightCm.sourceIds, ...right.heightCm.sourceIds) },
+    { label: 'Weight', left: range(left.weightKg.min, left.weightKg.max, left.weightKg.unit), right: range(right.weightKg.min, right.weightKg.max, right.weightKg.unit), sourceIds: sources(...left.weightKg.sourceIds, ...right.weightKg.sourceIds) },
+    { label: 'Habitat', left: list(left.habitatRegions), right: list(right.habitatRegions), sourceIds: sources(...left.sourceIds, ...right.sourceIds) },
+    { label: 'Diet', left: list(left.dietItems), right: list(right.dietItems), sourceIds: sources(...left.sourceIds, ...right.sourceIds) },
+    { label: 'Breeding', left: list(left.breeding), right: list(right.breeding), sourceIds: sources(...left.sourceIds, ...right.sourceIds) },
+    { label: 'Conservation', left: `${left.conservation.status} (${left.conservation.assessmentYear})`, right: `${right.conservation.status} (${right.conservation.assessmentYear})`, sourceIds: sources(left.conservation.sourceId, right.conservation.sourceId) },
   ]
 }

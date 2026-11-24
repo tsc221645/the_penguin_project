@@ -24,7 +24,7 @@ jobs:
 
       - name: Fetch the release tag object
         run: |
-          git fetch origin \
+          git fetch --force origin \
             "refs/tags/$GITHUB_REF_NAME:refs/tags/$GITHUB_REF_NAME"
 
       - name: Set up Node.js

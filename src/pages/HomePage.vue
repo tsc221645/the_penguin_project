@@ -38,13 +38,20 @@ onBeforeUnmount(stopHeroAutoPlay)
 </template>
 
 <style scoped>
-.hero-art .hero-carousel-image { width: min(74%, 400px); height: 500px; object-fit: cover; object-position: center; border-radius: 2px; box-shadow: 0 22px 35px #294d581f; animation: hero-image-in .55s ease both; }
-.hero-species-name { position: absolute; left: 50%; bottom: 48px; z-index: 2; width: min(74%, 400px); padding: 28px 14px 12px; transform: translateX(-50%); color: #fff; background: linear-gradient(transparent, #193044c9); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+.hero-art { --hero-image-width: min(74%, 400px); }
+.hero-art .hero-carousel-image { width: var(--hero-image-width); height: 500px; object-fit: cover; object-position: center; border-radius: 2px; box-shadow: 0 22px 35px #294d581f; animation: hero-image-in .55s ease both; }
+.hero-species-name { position: absolute; left: 50%; bottom: 48px; z-index: 2; width: var(--hero-image-width); padding: 28px 14px 12px; transform: translateX(-50%); color: #fff; background: linear-gradient(transparent, #193044c9); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
 .hero-art .art-label { top: auto; right: 0; bottom: 16px; }
-.hero-carousel-controls { position: absolute; right: 0; bottom: 58px; z-index: 3; display: flex; gap: 8px; }
-.hero-carousel-controls button { width: 34px; height: 34px; border: 1px solid #b9cbc7; border-radius: 50%; background: #fff; color: #1c4e62; cursor: pointer; font-size: 18px; transition: background-color .25s ease, color .25s ease, transform .25s ease; }
-.hero-carousel-controls button:hover { background: #1c4e62; color: #fff; transform: translateY(-2px); }
+.hero-carousel-controls { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.hero-carousel-controls button { position: absolute; top: 76%; pointer-events: auto; transform: translateY(-50%); }
+.hero-carousel-controls button:first-child { left: calc(50% - var(--hero-image-width) / 2 - 44px); }
+.hero-carousel-controls button:last-child { right: calc(50% - var(--hero-image-width) / 2 - 44px); }
+.hero-carousel-controls button { width: 40px; height: 48px; padding: 0; border: 0; background: transparent; color: #193044; cursor: pointer; font-size: 0; transition: color .25s ease, transform .25s ease; }
+.hero-carousel-controls button::before { content: ''; display: block; width: 22px; height: 22px; margin: auto; border-width: 0 0 5px 5px; border-style: solid; border-color: currentColor; }
+.hero-carousel-controls button:first-child::before { transform: rotate(45deg); }
+.hero-carousel-controls button:last-child::before { transform: rotate(225deg); }
+.hero-carousel-controls button:hover { color: #d56c46; transform: translateY(calc(-50% - 2px)); }
 @keyframes hero-image-in { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-@media (max-width: 700px) { .hero-art .hero-carousel-image { width: 72%; height: 330px; } .hero-species-name { width: 72%; bottom: 32px; } .hero-carousel-controls { bottom: 42px; } .hero-art .art-label { bottom: 10px; } }
+@media (max-width: 700px) { .hero-art { --hero-image-width: 72%; } .hero-art .hero-carousel-image { height: 330px; } .hero-species-name { bottom: 32px; } .hero-carousel-controls button:first-child { left: 3%; } .hero-carousel-controls button:last-child { right: 3%; } .hero-art .art-label { bottom: 10px; } }
 @media (prefers-reduced-motion: reduce) { .hero-carousel-image { animation: none; } }
 </style>

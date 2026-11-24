@@ -127,12 +127,14 @@ Initial MVP complete. The current implementation includes:
 - “Did you know?” fact cards;
 - keyboard-accessible answer buttons and restart flow;
 - tests for answer logic and source relationships.
+- an approved-image identification question linked to the central image registry;
+- additional reviewed questions for King, Yellow-eyed, and Snares penguins;
+- species-specific habitat maps embedded in every profile.
 
 Remaining Phase 4 work:
 
-- image-based identification quiz;
 - broader accessibility testing and automated keyboard-flow coverage;
-- additional reviewed questions for the remaining directory species.
+- additional reviewed questions for the remaining directory species as their editorial content expands.
 
 ## Contribution guidelines
 

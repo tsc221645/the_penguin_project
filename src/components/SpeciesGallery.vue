@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import UiIcon from './UiIcon.vue'
+import ImageDetails from './ImageDetails.vue'
 import { getImage } from '../lib/content'
 import type { ImageCategory, ImageRecord } from '../types/content'
 
@@ -64,8 +66,8 @@ onBeforeUnmount(stopAutoPlay)
     <div v-if="categories.length > 1" class="gallery-controls"><label for="gallery-category">Gallery view</label><select id="gallery-category" v-model="selectedCategory"><option value="all">All images</option><option v-for="category in categories" :key="category" :value="category">{{ category }}</option></select></div>
     <div class="carousel" @mouseenter="pause" @mouseleave="resume" @focusin="pause" @focusout="resume">
       <div class="carousel-stage"><img v-if="!imageError && activeImage" :key="activeImage.id" :src="activeImage.approvedImageUrl" :alt="activeImage.alt" @error="imageError = true"><div v-else class="map-fallback" role="status">This image could not be loaded. Choose another gallery image.</div></div>
-      <div v-if="activeImage" class="carousel-caption"><a :href="activeImage.originalFileUrl" target="_blank" rel="noreferrer">{{ activeImage.attributionText }}</a></div>
-      <div v-if="hasMultipleImages" class="carousel-nav"><button class="carousel-control" type="button" aria-label="Previous image" @click="previous">←</button><div class="carousel-dots" aria-label="Choose gallery image"><button v-for="(image, index) in visibleImages" :key="image.id" class="carousel-dot" type="button" :aria-label="`Go to image ${index + 1}`" :aria-pressed="index === currentIndex" @click="goTo(index)"></button></div><button class="carousel-control" type="button" aria-label="Next image" @click="next">→</button></div>
+      <div v-if="activeImage" class="carousel-caption"><ImageDetails :image-id="activeImage.id" /></div>
+      <div v-if="hasMultipleImages" class="carousel-nav"><button class="carousel-control" type="button" aria-label="Previous image" @click="previous"><UiIcon name="arrow-left" /></button><div class="carousel-dots" aria-label="Choose gallery image"><button v-for="(image, index) in visibleImages" :key="image.id" class="carousel-dot" type="button" :aria-label="`Go to image ${index + 1}`" :aria-pressed="index === currentIndex" @click="goTo(index)"></button></div><button class="carousel-control" type="button" aria-label="Next image" @click="next"><UiIcon name="arrow-right" /></button></div>
     </div>
   </section>
 </template>

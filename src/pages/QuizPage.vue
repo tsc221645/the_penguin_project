@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import FactCard from '../components/FactCard.vue'
 import SourceList from '../components/SourceList.vue'
+import UiIcon from '../components/UiIcon.vue'
 import { didYouKnowFacts, quizQuestions } from '../content/quiz'
 import { getImage, getSpecies } from '../lib/content'
 import { shuffleQuestions } from '../lib/quiz'
@@ -51,10 +52,10 @@ function restart() {
         <strong>{{ selectedOption === currentQuestion.correctOptionId ? 'Correct!' : 'Not quite.' }}</strong>
         <p>{{ currentQuestion.explanation }}</p>
         <SourceList :source-ids="currentQuestion.sourceIds" />
-        <div class="quiz-feedback-actions"><button class="button" type="button" @click="nextQuestion">{{ questionIndex === questions.length - 1 ? 'See result' : 'Next question' }} <span>→</span></button></div>
+        <div class="quiz-feedback-actions"><button class="button" type="button" @click="nextQuestion">{{ questionIndex === questions.length - 1 ? 'See result' : 'Next question' }} <span><UiIcon name="arrow-right" /></span></button></div>
       </div>
     </div>
-    <div v-else class="quiz-result" aria-live="polite"><p class="eyebrow">Quiz complete</p><h2>You scored {{ score }} of {{ questions.length }}</h2><p>{{ score === questions.length ? 'A perfect flight through the field guide.' : 'Every answer is another trail back to the birds.' }}</p><button class="button" type="button" @click="restart">Try again <span>↻</span></button></div>
+    <div v-else class="quiz-result" aria-live="polite"><p class="eyebrow">Quiz complete</p><h2>You scored {{ score }} of {{ questions.length }}</h2><p>{{ score === questions.length ? 'A perfect flight through the field guide.' : 'Every answer is another trail back to the birds.' }}</p><button class="button" type="button" @click="restart">Try again <span><UiIcon name="refresh" /></span></button></div>
     <section class="did-you-know"><div class="section-heading"><div><p class="eyebrow">A little more to know</p><h2>Small facts,<br><i>big birds</i>.</h2></div></div><div class="fact-card-grid"><FactCard v-for="fact in didYouKnowFacts" :key="fact.id" :fact="fact" /></div></section>
   </section>
 </template>
@@ -67,10 +68,10 @@ function restart() {
 .quiz-options { display: grid; gap: 12px; }
 .quiz-options button { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 16px 18px; border: 1px solid #b9cbc7; background: #f6f8f6; color: #193044; text-align: left; font: inherit; cursor: pointer; transition: background .25s ease, border-color .25s ease, transform .25s ease; }
 .quiz-options button:hover:not(:disabled), .quiz-options button.selected { transform: translateX(5px); border-color: #1c4e62; background: #e2eeeb; }
-.quiz-options button.correct { border-color: #3d806e; background: #e1f0e9; }
-.quiz-options button.incorrect { border-color: #c56a4a; background: #f9e6dd; }
-.quiz-feedback { margin-top: 25px; padding: 22px; border-left: 3px solid #c56a4a; background: #fff4e9; }
-.quiz-feedback.correct { border-left-color: #3d806e; background: #e1f0e9; }
+.quiz-options button.correct { border-color: var(--logo-blue); background: var(--logo-ice); }
+.quiz-options button.incorrect { border-color: var(--logo-blue); background: var(--logo-ice); }
+.quiz-feedback { margin-top: 25px; padding: 22px; border-left: 3px solid var(--logo-blue); background: var(--logo-pale); }
+.quiz-feedback.correct { border-left-color: var(--logo-blue); background: var(--logo-ice); }
 .quiz-feedback p { color: #536d74; }
 .quiz-feedback .button { margin-top: 12px; }
 .quiz-feedback-actions { display: flex; justify-content: flex-end; }
@@ -78,9 +79,9 @@ function restart() {
 .quiz-result { text-align: center; }
 .did-you-know { margin-top: 100px; }
 .did-you-know h2 { font-family: 'Playfair Display', serif; font-size: clamp(36px, 5vw, 58px); line-height: 1.05; margin: 0; }
-.did-you-know h2 i { color: #d56c46; }
+.did-you-know h2 i { color: var(--logo-blue); }
 .fact-card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.fact-card { padding: 24px; background: #eef4f1; border-top: 3px solid #d56c46; }
+.fact-card { padding: 24px; background: #eef4f1; border-top: 3px solid var(--logo-blue); }
 .fact-card-text { font-family: 'Playfair Display', serif; font-size: 21px; line-height: 1.3; }
 .fact-card :deep(.source-list) { margin-top: 20px; }
 @media (max-width: 700px) { .quiz-card, .quiz-result { padding: 24px; } .fact-card-grid { grid-template-columns: 1fr; } }

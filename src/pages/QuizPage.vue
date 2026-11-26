@@ -4,12 +4,14 @@ import FactCard from '../components/FactCard.vue'
 import SourceList from '../components/SourceList.vue'
 import { didYouKnowFacts, quizQuestions } from '../content/quiz'
 import { getImage, getSpecies } from '../lib/content'
+import { shuffleQuestions } from '../lib/quiz'
 
+const questions = ref(shuffleQuestions(quizQuestions))
 const questionIndex = ref(0)
 const score = ref(0)
 const selectedOption = ref<string | null>(null)
 const finished = ref(false)
-const currentQuestion = computed(() => quizQuestions[questionIndex.value])
+const currentQuestion = computed(() => questions.value[questionIndex.value])
 const selectedSpecies = computed(() => currentQuestion.value?.speciesId ? getSpecies(currentQuestion.value.speciesId) : undefined)
 const questionImage = computed(() => currentQuestion.value?.imageId ? getImage(currentQuestion.value.imageId) : undefined)
 
@@ -20,13 +22,14 @@ function choose(optionId: string) {
 }
 
 function nextQuestion() {
-  if (questionIndex.value === quizQuestions.length - 1) { finished.value = true; return }
+  if (questionIndex.value === questions.value.length - 1) { finished.value = true; return }
   questionIndex.value += 1
   selectedOption.value = null
 }
 
 function restart() {
   questionIndex.value = 0
+  questions.value = shuffleQuestions(quizQuestions)
   score.value = 0
   selectedOption.value = null
   finished.value = false
@@ -37,7 +40,7 @@ function restart() {
   <section class="page-heading"><div class="container"><p class="eyebrow">Field guide / quiz</p><h1>Test your penguin knowledge</h1><p>Answer questions built from the project’s reviewed facts and follow every explanation back to its source.</p></div></section>
   <section class="container quiz-page">
     <div v-if="!finished && currentQuestion" class="quiz-card" aria-live="polite">
-      <div class="quiz-progress"><span>Question {{ questionIndex + 1 }} of {{ quizQuestions.length }}</span><span>Score {{ score }}</span></div>
+      <div class="quiz-progress"><span>Question {{ questionIndex + 1 }} of {{ questions.length }}</span><span>Score {{ score }}</span></div>
       <p v-if="selectedSpecies" class="eyebrow">{{ selectedSpecies.commonName }}</p>
       <h2>{{ currentQuestion.prompt }}</h2>
       <figure v-if="questionImage" class="quiz-image"><img :src="questionImage.approvedImageUrl" :alt="questionImage.alt"><figcaption>{{ questionImage.attributionText }}</figcaption></figure>
@@ -48,10 +51,10 @@ function restart() {
         <strong>{{ selectedOption === currentQuestion.correctOptionId ? 'Correct!' : 'Not quite.' }}</strong>
         <p>{{ currentQuestion.explanation }}</p>
         <SourceList :source-ids="currentQuestion.sourceIds" />
-        <div class="quiz-feedback-actions"><button class="button" type="button" @click="nextQuestion">{{ questionIndex === quizQuestions.length - 1 ? 'See result' : 'Next question' }} <span>→</span></button></div>
+        <div class="quiz-feedback-actions"><button class="button" type="button" @click="nextQuestion">{{ questionIndex === questions.length - 1 ? 'See result' : 'Next question' }} <span>→</span></button></div>
       </div>
     </div>
-    <div v-else class="quiz-result" aria-live="polite"><p class="eyebrow">Quiz complete</p><h2>You scored {{ score }} of {{ quizQuestions.length }}</h2><p>{{ score === quizQuestions.length ? 'A perfect flight through the field guide.' : 'Every answer is another trail back to the birds.' }}</p><button class="button" type="button" @click="restart">Try again <span>↻</span></button></div>
+    <div v-else class="quiz-result" aria-live="polite"><p class="eyebrow">Quiz complete</p><h2>You scored {{ score }} of {{ questions.length }}</h2><p>{{ score === questions.length ? 'A perfect flight through the field guide.' : 'Every answer is another trail back to the birds.' }}</p><button class="button" type="button" @click="restart">Try again <span>↻</span></button></div>
     <section class="did-you-know"><div class="section-heading"><div><p class="eyebrow">A little more to know</p><h2>Small facts,<br><i>big birds</i>.</h2></div></div><div class="fact-card-grid"><FactCard v-for="fact in didYouKnowFacts" :key="fact.id" :fact="fact" /></div></section>
   </section>
 </template>

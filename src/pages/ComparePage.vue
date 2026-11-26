@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { species } from '../lib/content'
 import { compareSpecies } from '../lib/explore'
 import { getSource } from '../lib/content'
+import UiIcon from '../components/UiIcon.vue'
 
 const leftSlug = ref('adelie')
 const rightSlug = ref('emperor')
@@ -16,7 +17,7 @@ const rows = computed(() => compareSpecies(left.value, right.value))
   <section class="container compare-page">
     <div class="compare-selectors"><label>First species<select v-model="leftSlug"><option v-for="item in species" :key="item.slug" :value="item.slug">{{ item.commonName }}</option></select></label><span>×</span><label>Second species<select v-model="rightSlug"><option v-for="item in species" :key="item.slug" :value="item.slug">{{ item.commonName }}</option></select></label></div>
     <div class="compare-header"><div></div><div><p class="eyebrow">{{ left.commonName }}</p><strong>{{ left.scientificName }}</strong></div><div><p class="eyebrow">{{ right.commonName }}</p><strong>{{ right.scientificName }}</strong></div></div>
-    <div class="compare-table"><div v-for="row in rows" :key="row.label" class="compare-row"><strong>{{ row.label }}</strong><span>{{ row.left }}<small><a v-for="sourceId in row.sourceIds" :key="sourceId" :href="getSource(sourceId)?.url" target="_blank" rel="noreferrer">{{ getSource(sourceId)?.organizationOrAuthor }} ↗</a></small></span><span>{{ row.right }}<small><a v-for="sourceId in row.sourceIds" :key="sourceId" :href="getSource(sourceId)?.url" target="_blank" rel="noreferrer">{{ getSource(sourceId)?.organizationOrAuthor }} ↗</a></small></span></div></div>
+    <div class="compare-table"><div v-for="row in rows" :key="row.label" class="compare-row"><strong>{{ row.label }}</strong><span>{{ row.left }}<small><a v-for="sourceId in row.sourceIds" :key="sourceId" :href="getSource(sourceId)?.url" target="_blank" rel="noreferrer">{{ getSource(sourceId)?.organizationOrAuthor }} <UiIcon name="open" /></a></small></span><span>{{ row.right }}<small><a v-for="sourceId in row.sourceIds" :key="sourceId" :href="getSource(sourceId)?.url" target="_blank" rel="noreferrer">{{ getSource(sourceId)?.organizationOrAuthor }} <UiIcon name="open" /></a></small></span></div></div>
     <p class="muted compare-note">Conservation categories are shown with their assessment year. Measurements remain in their recorded units and are not converted or estimated.</p>
   </section>
 </template>

@@ -13,7 +13,7 @@ export function validateContent(content: ContentBundle): string[] {
   const sourceIds = new Set(content.sources.map((source) => source.id))
   const imageIds = new Set(content.images.map((image) => image.id))
   const speciesIds = new Set(content.species.map((item) => item.id))
-  const allowedLicenses = new Set(['PROJECT-OWNED', 'CC0', 'PUBLIC-DOMAIN', 'CC-BY-4.0', 'CC-BY-SA-4.0'])
+  const allowedLicenses = new Set(['PROJECT-OWNED', 'CC0', 'PUBLIC-DOMAIN', 'CC-BY-2.0', 'CC-BY-4.0', 'CC-BY-SA-4.0'])
 
   for (const image of content.images) {
     for (const field of ['id', 'speciesId', 'approvedImageUrl', 'author', 'originalFileUrl', 'licenseId', 'licenseUrl', 'attributionText', 'alt']) if (!image[field as keyof ImageRecord]) errors.push(`Image ${image.id || '(unknown)'} is missing ${field}`)

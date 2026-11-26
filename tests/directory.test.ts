@@ -15,4 +15,8 @@ describe('species directory', () => {
     expect(species.filter((item) => item.contentStatus === 'published')).toHaveLength(3)
     expect(species.filter((item) => item.contentStatus === 'directory')).toHaveLength(15)
   })
+
+  it('provides seven gallery images for every species', () => {
+    expect(species.every((item) => item.galleryImageIds.length === 7)).toBe(true)
+  })
 })

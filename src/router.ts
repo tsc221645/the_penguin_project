@@ -9,7 +9,7 @@ import HabitatsPage from './pages/HabitatsPage.vue'
 import QuizPage from './pages/QuizPage.vue'
 
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   scrollBehavior: (_to, _from, savedPosition) => savedPosition ?? { top: 0, left: 0 },
   routes: [
   { path: '/', component: HomePage }, { path: '/species', component: SpeciesPage },

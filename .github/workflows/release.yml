@@ -103,6 +103,8 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     permissions:
+      actions: read
+      contents: read
       pages: write
       id-token: write
     steps:
@@ -115,14 +117,20 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
+      - name: Verify Pages files
+        run: test -s dist/index.html
+
       - name: Prepare Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          name: github-pages
           path: dist
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages
 
   create-release:
     name: Create GitHub Release

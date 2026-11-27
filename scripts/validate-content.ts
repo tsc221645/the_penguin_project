@@ -25,13 +25,16 @@ export function validateContent(content: ContentBundle): string[] {
   }
   for (const item of content.species) {
     for (const fact of item.facts) for (const sourceId of fact.sourceIds) if (!sourceIds.has(sourceId)) errors.push(`Fact ${fact.id} in ${item.id} references missing source ${sourceId}`)
+    for (const [label, measurement] of [['height', item.heightCm], ['weight', item.weightKg] ] as const) {
+      if (measurement.min <= 0 || measurement.max <= 0 || measurement.min > measurement.max || !measurement.sourceIds.length) errors.push(`Species ${item.id} has incomplete ${label} comparison data`)
+      for (const sourceId of measurement.sourceIds) if (!sourceIds.has(sourceId)) errors.push(`Measurement in ${item.id} references missing source ${sourceId}`)
+    }
     if (item.contentStatus === 'directory') {
       for (const sourceId of item.sourceIds) if (!sourceIds.has(sourceId)) errors.push(`Directory species ${item.id} references missing source ${sourceId}`)
       if (!imageIds.has(item.heroImageId)) errors.push(`Directory species ${item.id} references missing hero image`)
       for (const imageId of item.galleryImageIds) if (!imageIds.has(imageId)) errors.push(`Directory species ${item.id} references missing gallery image ${imageId}`)
       continue
     }
-    for (const measurement of [item.heightCm, item.weightKg]) for (const sourceId of measurement.sourceIds) if (!sourceIds.has(sourceId)) errors.push(`Measurement in ${item.id} references missing source ${sourceId}`)
     if (!imageIds.has(item.heroImageId)) errors.push(`Species ${item.id} references missing hero image`)
     for (const imageId of item.galleryImageIds) if (!imageIds.has(imageId)) errors.push(`Species ${item.id} references missing gallery image ${imageId}`)
     for (const sourceId of item.sourceIds) if (!sourceIds.has(sourceId)) errors.push(`Species ${item.id} references missing source ${sourceId}`)

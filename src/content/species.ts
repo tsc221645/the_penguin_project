@@ -1,7 +1,9 @@
 import type { FactRecord, MeasurementRange, SpeciesRecord } from '../types/content'
 
 const fact = (id: string, text: string, sourceIds: string[]): FactRecord => ({ id, text, sourceIds })
-const measurement = (min: number, max: number, unit: MeasurementRange['unit'], sourceIds: string[]): MeasurementRange => ({ min, max, unit, sourceIds })
+const measurement = (min: number, max: number, unit: MeasurementRange['unit'], sourceIds: string[], qualifier?: MeasurementRange['qualifier']): MeasurementRange => ({
+  min, max, unit, sourceIds, ...(qualifier ? { qualifier } : {}),
+})
 
 export const species: SpeciesRecord[] = [
   {
@@ -55,13 +57,33 @@ const directoryProfiles: Record<string, DirectoryProfile> = {
   'erect-crested': profile('erect-crested', { intro: 'A rare island penguin whose crest feathers stand sharply above the eyes.', description: 'Erect-crested penguins breed on remote islands south of New Zealand, especially the Bounty and Antipodes groups. Their isolated breeding grounds and steep coastal terrain keep the species closely tied to the subantarctic island environment.', habitatRegions: ['Bounty Islands', 'Antipodes Islands', 'New Zealand subantarctic'], breedingRegions: ['Rocky island ledges and coastal slopes'], dietItems: ['Krill', 'Small fish', 'Squid'], traits: ['Erect yellow crest', 'Black head', 'Orange bill'], behavior: ['Rocky shore movement', 'Offshore foraging'], breeding: ['Island colonies', 'Scrape nests'], facts: [['crest', 'The yellow crest feathers project upward, giving the species its common name.', ['penguin-world']], ['islands', 'Its breeding range is concentrated on remote subantarctic island groups south of New Zealand.', ['penguins-list']]], sourceIds: ['penguins-list', 'ioc-13-2', 'nz-doc-penguins', 'penguin-world'] }),
 }
 
+const directoryMeasurements: Record<string, { heightCm: MeasurementRange; weightKg: MeasurementRange }> = {
+  king: { heightCm: measurement(85, 95, 'cm', ['penguin-size-review']), weightKg: measurement(12.9, 14.5, 'kg', ['penguin-size-review'], 'mean adult') },
+  chinstrap: { heightCm: measurement(71, 76, 'cm', ['penguin-size-review']), weightKg: measurement(4.7, 5, 'kg', ['penguin-size-review'], 'mean adult') },
+  little: { heightCm: measurement(40, 45, 'cm', ['penguin-size-review']), weightKg: measurement(1, 1.2, 'kg', ['penguin-size-review'], 'mean adult') },
+  galapagos: { heightCm: measurement(53, 53, 'cm', ['penguin-size-review'], 'about'), weightKg: measurement(1.9, 2.1, 'kg', ['penguin-size-review'], 'mean adult') },
+  humboldt: { heightCm: measurement(65, 65, 'cm', ['penguin-size-review'], 'about'), weightKg: measurement(4.2, 5, 'kg', ['penguin-size-review'], 'mean adult') },
+  magellanic: { heightCm: measurement(70, 70, 'cm', ['penguin-size-review'], 'about'), weightKg: measurement(4.6, 4.9, 'kg', ['penguin-size-review'], 'mean adult') },
+  african: { heightCm: measurement(70, 70, 'cm', ['penguin-size-review'], 'about'), weightKg: measurement(2.8, 3.1, 'kg', ['penguin-size-review'], 'mean adult') },
+  'yellow-eyed': { heightCm: measurement(66, 78, 'cm', ['penguin-size-review']), weightKg: measurement(4.9, 5.3, 'kg', ['penguin-size-review'], 'mean adult') },
+  macaroni: { heightCm: measurement(71, 71, 'cm', ['penguin-size-review'], 'about'), weightKg: measurement(5, 5.2, 'kg', ['penguin-size-review'], 'mean adult') },
+  royal: { heightCm: measurement(65, 75, 'cm', ['penguin-size-review']), weightKg: measurement(5.3, 5.7, 'kg', ['penguin-size-review'], 'mean adult') },
+  'northern-rockhopper': { heightCm: measurement(45, 58, 'cm', ['penguin-size-review']), weightKg: measurement(3.1, 3.4, 'kg', ['penguin-size-review'], 'mean adult') },
+  'southern-rockhopper': { heightCm: measurement(45, 58, 'cm', ['penguin-size-review']), weightKg: measurement(3.1, 3.4, 'kg', ['penguin-size-review'], 'mean adult') },
+  fiordland: { heightCm: measurement(55, 55, 'cm', ['penguin-size-review'], 'about'), weightKg: measurement(3.8, 4.3, 'kg', ['penguin-size-review'], 'mean adult') },
+  snares: { heightCm: measurement(51, 61, 'cm', ['penguin-size-review']), weightKg: measurement(2.5, 2.6, 'kg', ['penguin-size-review'], 'mean adult') },
+  'erect-crested': { heightCm: measurement(67, 67, 'cm', ['penguin-size-review'], 'about'), weightKg: measurement(5.4, 6.4, 'kg', ['penguin-size-review'], 'mean adult') },
+}
+
 const directoryEntry = (id: string, slug: string, commonName: string, scientificName: string, range: string, status: SpeciesRecord['conservation']['status']): SpeciesRecord => {
   const details = directoryProfiles[id]
+  const measurements = directoryMeasurements[id]
+  const sourceIds = [...new Set([...details.sourceIds, ...measurements.heightCm.sourceIds, ...measurements.weightKg.sourceIds])]
   return {
     id, slug, commonName, scientificName, intro: details.intro, description: details.description, heroImageId: `${id}-hero`, galleryImageIds: [`${id}-hero`, `${id}-gallery`, `${id}-extra-01`, `${id}-extra-02`, `${id}-extra-03`, `${id}-extra-04`, `${id}-extra-05`],
     habitatRegions: details.habitatRegions.length ? details.habitatRegions : [range], breedingRegions: details.breedingRegions, dietItems: details.dietItems, traits: details.traits,
-    behavior: details.behavior, breeding: details.breeding, facts: details.facts, heightCm: measurement(0, 0, 'cm', []), weightKg: measurement(0, 0, 'kg', []),
-    conservation: { status, assessmentYear: 2023, sourceId: 'penguins-list', reviewDate: '2026-11-24' }, sourceIds: details.sourceIds, lastReviewed: '2026-11-24', contentStatus: 'directory',
+    behavior: details.behavior, breeding: details.breeding, facts: details.facts, heightCm: measurements.heightCm, weightKg: measurements.weightKg,
+    conservation: { status, assessmentYear: 2023, sourceId: 'penguins-list', reviewDate: '2026-11-24' }, sourceIds, lastReviewed: '2026-11-27', contentStatus: 'directory',
   }
 }
 

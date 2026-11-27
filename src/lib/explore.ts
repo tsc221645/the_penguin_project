@@ -1,4 +1,4 @@
-import type { ConservationStatus, SpeciesRecord } from '../types/content'
+import type { ConservationStatus, MeasurementRange, SpeciesRecord } from '../types/content'
 
 export const normalizeSearch = (value: string): string => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
 
@@ -19,18 +19,29 @@ export const getRegions = (items: SpeciesRecord[]) => [...new Set(items.flatMap(
 export const getRandomSpecies = (items: SpeciesRecord[], random = Math.random) => items[Math.floor(random() * items.length)]
 
 export interface ComparisonRow { label: string; left: string; right: string; sourceIds: string[] }
+export interface MultiComparisonRow { label: string; values: string[]; sourceIds: string[] }
 
-const range = (min: number, max: number, unit: string) => min === 0 && max === 0 ? 'Not available' : `${min}–${max} ${unit}`
+const range = (measurement: MeasurementRange) => {
+  if (measurement.min === 0 && measurement.max === 0) return 'Not available'
+  const value = measurement.min === measurement.max ? `${measurement.min} ${measurement.unit}` : `${measurement.min}–${measurement.max} ${measurement.unit}`
+  if (measurement.qualifier === 'about') return `About ${value}`
+  if (measurement.qualifier === 'mean adult') return `Mean adult: ${value}`
+  return value
+}
 const list = (items: string[]) => items.length ? items.join(', ') : 'Not available'
 
-export function compareSpecies(left: SpeciesRecord, right: SpeciesRecord): ComparisonRow[] {
+export function compareSpeciesMany(items: SpeciesRecord[]): MultiComparisonRow[] {
   const sources = (...ids: string[]) => [...new Set(ids)]
   return [
-    { label: 'Height', left: range(left.heightCm.min, left.heightCm.max, left.heightCm.unit), right: range(right.heightCm.min, right.heightCm.max, right.heightCm.unit), sourceIds: sources(...left.heightCm.sourceIds, ...right.heightCm.sourceIds) },
-    { label: 'Weight', left: range(left.weightKg.min, left.weightKg.max, left.weightKg.unit), right: range(right.weightKg.min, right.weightKg.max, right.weightKg.unit), sourceIds: sources(...left.weightKg.sourceIds, ...right.weightKg.sourceIds) },
-    { label: 'Habitat', left: list(left.habitatRegions), right: list(right.habitatRegions), sourceIds: sources(...left.sourceIds, ...right.sourceIds) },
-    { label: 'Diet', left: list(left.dietItems), right: list(right.dietItems), sourceIds: sources(...left.sourceIds, ...right.sourceIds) },
-    { label: 'Breeding', left: list(left.breeding), right: list(right.breeding), sourceIds: sources(...left.sourceIds, ...right.sourceIds) },
-    { label: 'Conservation', left: `${left.conservation.status} (${left.conservation.assessmentYear})`, right: `${right.conservation.status} (${right.conservation.assessmentYear})`, sourceIds: sources(left.conservation.sourceId, right.conservation.sourceId) },
+    { label: 'Height', values: items.map((item) => range(item.heightCm)), sourceIds: sources(...items.flatMap((item) => item.heightCm.sourceIds)) },
+    { label: 'Weight', values: items.map((item) => range(item.weightKg)), sourceIds: sources(...items.flatMap((item) => item.weightKg.sourceIds)) },
+    { label: 'Habitat', values: items.map((item) => list(item.habitatRegions)), sourceIds: sources(...items.flatMap((item) => item.sourceIds)) },
+    { label: 'Diet', values: items.map((item) => list(item.dietItems)), sourceIds: sources(...items.flatMap((item) => item.sourceIds)) },
+    { label: 'Breeding', values: items.map((item) => list(item.breeding)), sourceIds: sources(...items.flatMap((item) => item.sourceIds)) },
+    { label: 'Conservation', values: items.map((item) => `${item.conservation.status} (${item.conservation.assessmentYear})`), sourceIds: sources(...items.map((item) => item.conservation.sourceId)) },
   ]
+}
+
+export function compareSpecies(left: SpeciesRecord, right: SpeciesRecord): ComparisonRow[] {
+  return compareSpeciesMany([left, right]).map((row) => ({ label: row.label, left: row.values[0], right: row.values[1], sourceIds: row.sourceIds }))
 }

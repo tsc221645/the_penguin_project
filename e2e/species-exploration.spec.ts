@@ -26,13 +26,22 @@ test('cycles through the Adélie image carousel', async ({ page }) => {
   await expect(image).not.toHaveAttribute('src', firstSource ?? '')
 })
 
-test('compares two species and shows source links', async ({ page }) => {
+test('compares up to five species and collects sources at the bottom', async ({ page }) => {
   await page.goto('./compare')
-  await page.getByLabel('First species').selectOption('emperor')
   await page.getByLabel('Second species').selectOption('gentoo')
+  await page.getByLabel('First species').selectOption('emperor')
+  for (let index = 0; index < 3; index += 1) {
+    await page.getByRole('button', { name: 'Add another species' }).click()
+  }
   await expect(page.getByRole('heading', { name: 'Side by side' })).toBeVisible()
   await expect(page.locator('.compare-table')).toContainText('Conservation')
-  await expect(page.locator('.compare-table a').first()).toHaveAttribute('href', /https:\/\//)
+  await expect(page.locator('.compare-species-card')).toHaveCount(5)
+  await expect(page.locator('.compare-size-item')).toHaveCount(5)
+  await expect(page.locator('.compare-scale-section model-viewer')).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Add another species' })).toHaveCount(0)
+  await expect(page.locator('.compare-table a')).toHaveCount(0)
+  await expect(page.getByRole('heading', { name: 'Sources & review.' })).toBeVisible()
+  await expect(page.locator('.compare-sources a').first()).toHaveAttribute('href', /https:\/\//)
 })
 
 test('explains the IUCN Red List categories', async ({ page }) => {
@@ -65,4 +74,11 @@ test('shows a species-specific habitat map on a profile', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Where to find King penguin' })).toBeVisible()
   await expect(page.locator('.profile-habitat .habitat-map')).toBeVisible()
   await expect(page.locator('.profile-region-list')).toContainText('Subantarctic islands')
+})
+
+test('shows the Adélie 3D model preview in compare', async ({ page }) => {
+  await page.goto('./compare')
+  await expect(page.locator('.compare-scale-section')).toBeVisible()
+  const modelSource = await page.locator('.compare-scale-section model-viewer').evaluate((element) => (element as HTMLElement & { src?: string }).src ?? element.getAttribute('src') ?? '')
+  expect(modelSource).toMatch(/adelie-[^/]+\.glb/)
 })

@@ -38,4 +38,11 @@ describe('validateContent', () => {
       'Image adelie-hero has unsupported license ALL-RIGHTS-RESERVED',
     ]))
   })
+
+  it('rejects incomplete comparison measurements', () => {
+    const bundle = validBundle()
+    const king = bundle.species.find((item) => item.id === 'king')!
+    king.heightCm = { ...king.heightCm, min: 0, max: 0 }
+    expect(validateContent(bundle)).toContain('Species king has incomplete height comparison data')
+  })
 })

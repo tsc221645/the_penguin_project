@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { species } from '../src/content/species'
-import { compareSpecies, filterSpecies, getRandomSpecies, normalizeSearch } from '../src/lib/explore'
+import { compareSpecies, compareSpeciesMany, filterSpecies, getRandomSpecies, normalizeSearch } from '../src/lib/explore'
 
 describe('species exploration', () => {
   it('normalizes accents, punctuation, and case for search', () => {
@@ -18,9 +18,16 @@ describe('species exploration', () => {
     expect(getRandomSpecies(species, () => 0.99)?.id).toBe('erect-crested')
   })
 
-  it('keeps measurements unavailable while comparing reviewed profile fields', () => {
+  it('includes measurements when comparing a reviewed profile with a directory species', () => {
     const rows = compareSpecies(species[0], species.find((item) => item.id === 'king')!)
-    expect(rows.find((row) => row.label === 'Height')?.right).toBe('Not available')
+    expect(rows.find((row) => row.label === 'Height')?.right).toBe('85–95 cm')
+    expect(rows.find((row) => row.label === 'Weight')?.right).toBe('Mean adult: 12.9–14.5 kg')
     expect(rows.find((row) => row.label === 'Diet')?.right).toBe('Fish, Squid')
+  })
+
+  it('returns one value per species for a multi-species comparison', () => {
+    const rows = compareSpeciesMany(species.slice(0, 5))
+    expect(rows).toHaveLength(6)
+    expect(rows.find((row) => row.label === 'Conservation')?.values).toHaveLength(5)
   })
 })

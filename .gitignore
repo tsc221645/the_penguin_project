@@ -21,6 +21,7 @@ test-results/
 vite.config.js
 vite.config.d.ts
 *.d.ts
+!src/env.d.ts
 *.js
 !eslint.config.mjs
 

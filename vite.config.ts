@@ -3,5 +3,6 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   base: process.env.VITE_BASE ?? '/',
+  assetsInclude: ['**/*.glb'],
   plugins: [vue()],
 })
